@@ -1,3 +1,5 @@
+# IAM policy
+
 data "google_iam_policy" "workload_identity_user_github_actions" {
   binding {
     role = "roles/iam.workloadIdentityUser"
@@ -5,7 +7,17 @@ data "google_iam_policy" "workload_identity_user_github_actions" {
   }
 }
 
+data "google_iam_policy" "owner_github_actions" {
+  binding {
+    role = "roles/owner"
+    members = [google_service_account.github_actions.email]
+  }
+}
+
+# IAM binding
+
 resource "google_service_account_iam_policy" "binding_sa_and_wi_github_actions" {
   service_account_id = google_service_account.github_actions.name
-  policy_data        = data.google_iam_policy.workload_identity_user_github_actions.policy_data
+  policy_data        = data.google_iam_policy.owner_github_actions.policy_data
 }
+

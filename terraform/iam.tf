@@ -10,7 +10,7 @@ data "google_iam_policy" "workload_identity_user_github_actions" {
 data "google_iam_policy" "owner_github_actions" {
   binding {
     role = "roles/owner"
-    members = [google_service_account.github_actions.email]
+    members = ["serviceAccount:${google_service_account.github_actions.email}"]
   }
 }
 
